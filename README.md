@@ -1,6 +1,7 @@
-# Task Manager API — Take-Home Assignment
+# Task Manager API
 
-A small REST API for managing tasks.
+A RESTful Task Manager API. This project focuses on API functionality, automated testing, bug detection, bug fixing, and feature development.
+
 
 ## API Endpoints
 
@@ -27,26 +28,22 @@ A small REST API for managing tasks.
   "priority": "low | medium | high",
   "dueDate": "ISO string | null",
   "completedAt": "ISO string | null",
-  "createdAt": "ISO string"
-}
-```
-
-Assigned tasks additionally contain:
-
-```json
-{
+  "createdAt": "ISO string",
   "assignee": "string"
 }
 ```
 
 ## Installation
 
+Clone the repository and install dependencies:
+
 ```bash
-cd task-api
+git clone https://github.com/dLomas26/Underpin.git
+cd Underpin
 npm install
 ```
 
-## Run the API
+## Run the Application
 
 ```bash
 npm start
@@ -60,6 +57,8 @@ http://localhost:3000
 
 ## Run Tests
 
+Run the complete test suite:
+
 ```bash
 npm test
 ```
@@ -70,41 +69,41 @@ npm test
 npm run coverage
 ```
 
-The coverage report is generated in:
+The detailed HTML coverage report is generated at:
 
 ```text
 coverage/lcov-report/index.html
 ```
 
-Open `index.html` in a browser to view the detailed coverage report.
+Open `index.html` in a browser to view line-by-line coverage.
 
 ## Testing
 
-The test suite includes:
+The project includes:
 
-* Unit tests for `taskService.js`
+* Unit tests for the task service
 * Integration tests for API routes using Supertest
 * Validation tests
-* Happy-path scenarios
-* Missing-resource scenarios
-* Invalid input scenarios
-* Pagination edge cases
-* Task assignment scenarios
-* Already-assigned task handling
+* Happy-path tests
+* Error-handling tests
+* Edge-case tests
+* Pagination tests
+* Task assignment tests
+* Already-assigned task tests
 
-The target for the assignment is **80%+ test coverage**.
+The project targets **80%+ test coverage**.
 
 ## Bug Found and Fixed
 
 ### Pagination Offset Bug
 
-The original pagination logic calculated the offset as:
+The original pagination implementation used:
 
 ```js
 const offset = page * limit;
 ```
 
-This caused page 1 to skip the first set of tasks.
+This caused the first page to skip tasks.
 
 It was fixed to:
 
@@ -119,9 +118,15 @@ Now:
 ?page=2&limit=2 → Next 2 tasks
 ```
 
-Additional issues discovered during testing are documented in `BUG_REPORT.md`.
+Additional bugs and observations are documented in:
 
-## Task Assignment Feature
+```text
+BUG_REPORT.md
+```
+
+## Task Assignment
+
+A new endpoint was added to assign a task to a user.
 
 ### Endpoint
 
@@ -137,54 +142,72 @@ PATCH /tasks/:id/assign
 }
 ```
 
-### Behavior
+### Response Behavior
 
-* `200` — task successfully assigned
-* `400` — invalid or empty assignee
-* `404` — task does not exist
-* `409` — task is already assigned
+| Status | Description                |
+| ------ | -------------------------- |
+| 200    | Task successfully assigned |
+| 400    | Invalid or empty assignee  |
+| 404    | Task does not exist        |
+| 409    | Task is already assigned   |
 
 ## Project Structure
 
 ```text
-task-api/
+Underpin/
+│
 ├── src/
 │   ├── routes/
 │   ├── services/
 │   ├── utils/
 │   └── app.js
+│
 ├── tests/
 │   ├── taskService.test.js
 │   ├── tasks.routes.test.js
 │   └── validators.test.js
+│
+├── coverage/
+│   └── lcov-report/
+│
 ├── BUG_REPORT.md
+├── SOLUTION_README.md
 ├── SUBMISSION_NOTE.md
+├── jest.config.js
 ├── package.json
-└── README.md
+└── package-lock.json
 ```
+
+## Documentation
+
+| File                 | Purpose                                                |
+| -------------------- | ------------------------------------------------------ |
+| `BUG_REPORT.md`      | Documents bugs discovered during testing               |
+| `SUBMISSION_NOTE.md` | Final assignment observations and production questions |
+| `SOLUTION_README.md` | Additional solution details                            |
 
 ## Future Improvements
 
-If more time were available, I would add:
-
-* Tests for invalid pagination values
-* Malformed JSON handling
-* Larger dataset testing
-* More API response schema validation
-* Persistent database storage
-* Authentication and authorization
-* API documentation using Swagger/OpenAPI
+* Add more validation for pagination parameters
+* Improve API response schema validation
+* Add malformed JSON handling
+* Add persistent database storage
+* Add authentication and authorization
+* Add Swagger/OpenAPI documentation
+* Add CI/CD pipeline with automated testing
 
 ## Production Considerations
 
-Before shipping to production, I would clarify:
+Before deploying to production, I would clarify:
 
 1. Whether task reassignment should be allowed.
 2. Whether completing a task should preserve its priority.
-3. Expected limits for pagination parameters.
+3. Valid ranges for pagination parameters.
 4. Whether status and priority values should be case-sensitive.
-5. Whether the in-memory store will be replaced with a persistent database.
+5. Whether the in-memory store should be replaced with a persistent database.
 
 ## Author
 
 **Deepanshu Lomas**
+
+GitHub: [@dLomas26](https://github.com/dLomas26)
